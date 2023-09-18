@@ -1,0 +1,45 @@
+- content_for(:title) do
+  = t :orders_edit_title
+
+- content_for :injection_data do
+  = inject_enterprise_and_relatives
+
+.darkswarm
+  - content_for :order_cycle_form do
+    %closing
+      = t :orders_edit_headline
+    %p
+      = t :orders_edit_time
+      %strong
+        - if @order.order_cycle
+          = pickup_time @order.order_cycle
+        - else
+          = @order.distributor.next_collection_at
+
+  - content_for :ordercycle_sidebar do
+    .show-for-large-up.large-4.columns
+      = render partial: "shopping_shared/order_cycles"
+
+  = render partial: "shopping_shared/header"
+
+  .sub-header.show-for-medium-down
+    = render partial: "shopping_shared/order_cycles"
+
+  #cart-container
+    - if @order.line_items.empty?
+      %div.row
+        %p= t(:your_cart_is_empty)
+        %p= link_to t(:continue_shopping), current_shop_products_path, :class => 'button continue'
+
+    - else
+      %div
+        = form_for @order, :url => main_app.update_cart_path,
+          :html => {id: 'update-cart', name: "form", "ng-controller"=> 'CartFormCtrl'} do |order_form|
+          %div
+            %div
+              .row
+                = render :partial => 'form', :locals => { :order_form => order_form }
+
+        = render "spree/orders/form/cart_links"
+
+= render partial: "shared/footer"

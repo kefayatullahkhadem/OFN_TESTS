@@ -1,0 +1,26 @@
+- if @enterprise_fees.present?
+  %table
+    %thead
+      %tr
+        %th= t('.name')
+        %th= t('.fee_type')
+    %tbody
+      - @enterprise_fees.each do |enterprise_fee|
+        %tr
+          %td= enterprise_fee.name
+          %td= enterprise_fee.fee_type
+  %br
+  %div
+    %a.button{href: main_app.admin_enterprise_fees_path(enterprise_id: @enterprise.id)}
+      = t('.manage_fees')
+      %i.icon-arrow-right
+
+- else
+  %p.text-center
+    = t('.no_fees_yet')
+
+  %br
+  .text-center
+    %a.button{href: main_app.admin_enterprise_fees_path(enterprise_id: @enterprise.id)}
+      = t('.create_button')
+      %i.icon-arrow-right

@@ -1,0 +1,25 @@
+- content_for(:title) do
+  = t :shops_title
+
+- content_for :scripts do
+  = render partial: "shared/google_maps_js"
+
+- content_for :injection_data do
+  - cache(*CacheService::FragmentCaching.ams_shops) do
+    = inject_enterprises(@enterprises)
+  - cache(*CacheService::FragmentCaching.ams_all_taxons) do
+    = inject_taxons
+  - cache(*CacheService::FragmentCaching.ams_all_properties) do
+    = inject_properties
+
+#panes
+  #shops.pane
+    .row
+      .small-12.medium-6.medium-offset-3.columns.text-center
+        %h2
+          = t :shops_headline
+        %p.text-big
+          = t :shops_text
+
+= render "hubs"
+= render "shared/footer"

@@ -1,0 +1,11 @@
+input.ng-invalid.ng-dirty {
+  border: solid 1px red;
+
+  &.update-pending {
+    border: solid 1px red;
+  }
+}
+
+select.ng-invalid {
+  border: solid 1px red;
+}

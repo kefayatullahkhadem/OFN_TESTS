@@ -1,0 +1,33 @@
+- content_for :page_title do
+  = @report_title
+
+- content_for :minimal_js, true if @background_reports
+
+- options = @background_reports ? { data: { remote: "true" } } : {}
+
+= form_for @report.search, { url: url_for }.merge(options) do |f|
+  = hidden_field_tag "uuid", request.uuid
+
+  %fieldset.no-border-bottom.print-hidden
+    %legend{ align: 'center'}= t(:report_filters)
+    = render partial: "admin/reports/filters/#{@report_type}", locals: { f: f }
+    - if @report_subtype && lookup_context.exists?(@report_subtype, "admin/reports/filters", true)
+      = render partial: "admin/reports/filters/#{@report_subtype}", locals: { f: f }
+
+  %fieldset.print-hidden
+    %legend{ align: 'center'}= t(:report_render_options)
+    = render partial: "rendering_options"
+
+    .actions.filter-actions
+      = button t(:go), "report__submit-btn"
+
+.report__header.print-hidden
+  - if @report.message.present?
+    %p.report__message= @report.message
+  - if request.post? && !@error
+    %button.btn-print.icon-print{ onclick: "window.print()"}= t(:report_print)
+
+= t(@error, link: link_to(t(".report_link_label"), @error_url)) if @error
+
+#report-table{ data: { controller: "scoped-channel", "scoped-channel-id-value": request.uuid } }
+  = @table

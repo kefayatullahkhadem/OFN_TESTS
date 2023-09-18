@@ -1,0 +1,118 @@
+= render :partial => 'spree/admin/shared/product_sub_menu'
+= render :partial => 'spree/shared/error_messages', :locals => { :target => @product }
+= admin_inject_available_units
+
+= form_for [:admin, @product], :html => { :multipart => true } do |f|
+  .twelve.columns.alpha
+    %fieldset.no-border-bottom{ id: "new_product", 'ng-controller' => 'unitsCtrl' }
+      %legend{align: "center"}= t(".new_product")
+      .sixteen.columns.alpha
+        .eight.columns.alpha
+          = f.field_container :supplier do
+            = f.label :supplier, t(".supplier")
+            %span.required *
+            = f.select :supplier_id, options_from_collection_for_select(@producers, :id, :name, @product.supplier_id), { include_blank: t("spree.admin.products.new.supplier_select_placeholder") }, { "data-controller": "tom-select", class: "primary" }
+            = f.error_message_on :supplier
+        .eight.columns.omega
+          = f.field_container :name do
+            = f.label :name, t(".product_name")
+            %span.required *
+            %br/
+            = f.text_field :name, :class => 'fullwidth title'
+            = f.error_message_on :name
+      .sixteen.columns.alpha
+        .eight.columns.alpha
+          = f.field_container :variant_unit do
+            = f.label :variant_unit, t(".units")
+            %span.required *
+            %select{id: 'product_variant_unit_with_scale', 'ng-model' => 'product.variant_unit_with_scale', 'ng-options' => 'unit[1] as unit[0] for unit in variant_unit_options', "data-controller": "tom-select","data-tom-select-options-value": '{"allowEmptyOption":false}', class: "primary"}
+              %option{'value' => '', 'ng-hide' => "hasUnit(product)"}
+            %input{ type: 'hidden', 'ng-value': 'product.variant_unit', "ng-init": "product.variant_unit='#{@product.variant_unit}'", name: 'product[variant_unit]' }
+            %input{ type: 'hidden', 'ng-value': 'product.variant_unit_scale', "ng-init": "product.variant_unit_scale='#{@product.variant_unit_scale}'", name: 'product[variant_unit_scale]' }
+            = f.error_message_on :variant_unit
+        .two.columns
+          = f.field_container :unit_value do
+            = f.label :unit_value, t(".value"), 'ng-disabled' => "!hasUnit(product)"
+            %span.required *
+            %input.fullwidth{ id: 'product_unit_value', 'ng-model' => 'product.master.unit_value_with_description', :type => 'text', placeholder: "eg. 2", 'ng-disabled' => "!hasUnit(product)" }
+            %input{ type: 'hidden', 'ng-value': 'product.master.unit_value', "ng-init": "product.master.unit_value='#{@product.unit_value}'", name: 'product[unit_value]' }
+            %input{ type: 'hidden', 'ng-value': 'product.master.unit_description', "ng-init": "product.master.unit_description='#{@product.unit_description}'", name: 'product[unit_description]' }
+            = f.error_message_on :unit_value
+        = render 'display_as', f: f
+        .six.columns.omega{ 'ng-show' => "product.variant_unit_with_scale == 'items'" }
+          = f.field_container :unit_name do
+            = f.label :product_variant_unit_name, t(".unit_name")
+            %span.required *
+            %input.fullwidth{ id: 'product_variant_unit_name','ng-model' => 'product.variant_unit_name', :name => 'product[variant_unit_name]', :placeholder => t('admin.products.unit_name_placeholder'), :type => 'text' }
+      .sixteen.columns.alpha
+        .eight.columns.alpha
+          = render 'spree/admin/products/primary_taxon_form', f: f
+        .four.columns
+          = f.field_container :price do
+            = f.label :price, t(".price")
+            %span.required *
+            %br/
+            = f.text_field :price, { "class": "fullwidth", "ng-model": "product.price", "ng-value": "'#{@product.price}'" }
+            = f.error_message_on :price
+        .four.columns{ ng: { app: 'ofn.admin'}}
+          = f.field_container :unit_price do
+            %div{style: "display: flex"}
+              = f.label :unit_price, t(".unit_price")
+              %question-mark-with-tooltip{"question-mark-with-tooltip" => "_",
+                "question-mark-with-tooltip-append-to-body" => "true",
+                "question-mark-with-tooltip-placement" => "top",
+                "question-mark-with-tooltip-animation" => true,
+                key: "'js.admin.unit_price_tooltip'"}
+            %input{ "type" => "text", "id" => "product_unit_price", "name" => "product[unit_price]",
+                "class" => 'fullwidth', "disabled" =>  true, "ng-model" => "unit_price"}
+            %div{style: "color: black"}
+              = t(".unit_price_legend")
+      .sixteen.columns.alpha
+        .three.columns
+          - if Spree::TaxCategory.any?
+            = render 'spree/admin/products/tax_category_form', f: f
+          - else
+            &nbsp;
+        .five.columns.omega
+          = render 'spree/admin/products/shipping_category_form', f: f
+        .five.columns
+          = f.field_container :on_hand do
+            = f.label :on_hand, t(".on_hand")
+            %br/
+            = f.text_field :on_hand, class: 'fullwidth', value: @on_hand
+            = f.error_message_on :on_hand
+        .three.columns.omega
+          = f.field_container :on_demand do
+            = f.label :on_demand, t(".on_demand")
+            %br/
+            = f.check_box :on_demand, value: '1', checked: @on_demand == '1'
+            = f.error_message_on :on_demand
+
+      .sixteen.columns.alpha
+        = f.field_container :description do
+          = f.label :product_description, t(".product_description")
+          %br/
+          %text-angular{'id' => 'product_description', 'name' => 'product[description]', 'class' => 'text-angular', "textangular-links-target-blank" => true, 'ta-toolbar' => "[['bold','italics','underline','clear'],['insertLink']]", "ng-model": "product.description"}
+            = sanitize(@product.description)
+          = f.error_message_on :description
+  .four.columns.omega{ style: "text-align: center" }
+    %fieldset.no-border-bottom{ id: "image" }
+      %legend{align: "center"}= t(".image")
+      .row
+        = image_tag Spree::Image.default_image_url(:product), class: "four columns alpha"
+      .row
+        = f.fields_for 'image_attributes', f.object.build_image do |image_fields|
+          = image_fields.file_field :attachment
+  .sixteen.columns.alpha
+    .form-buttons.filter-actions.actions
+      = button t('actions.create'), 'icon-ok', :submit, value: "create"
+
+      = button t('actions.create_and_add_another'), 'icon-repeat', :submit, value: 'add_another'
+
+      = link_to_with_icon 'icon-remove', t('actions.cancel'), admin_products_path, :class => 'button'
+
+
+:javascript
+  angular.element(document.getElementById("new_product")).ready(function() {
+    angular.bootstrap(document.getElementById("new_product"), ['admin.products']);
+  });

@@ -1,0 +1,32 @@
+#powerTip {
+  max-width: 240px;
+  white-space: normal;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 13px;
+  pointer-events: none;
+  background-color: $color-3;
+  padding: 5px 15px;
+  border-radius: 3px;
+  color: #fff;
+  max-width: 240px;
+  white-space: normal;
+  text-transform: capitalize;
+}
+
+.arrow {
+  background-color: $color-3;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  transform: rotate(45deg);
+}
+
+.tooltip-container {
+  position: relative;
+}

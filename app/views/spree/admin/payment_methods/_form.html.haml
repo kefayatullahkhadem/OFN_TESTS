@@ -1,0 +1,48 @@
+= admin_inject_payment_method
+= admin_inject_json_ams_array "admin.paymentMethods", "shops", @hubs, Api::Admin::BasicEnterpriseSerializer
+.alpha.eleven.columns{ "ng-app" => "admin.paymentMethods", "ng-controller" => "paymentMethodCtrl" }
+  .row
+    = t '.deactivation_warning'
+  .row
+    .alpha.four.columns
+      = label_tag nil, t('.name')
+    .omega.twelve.columns
+      = text_field :payment_method, :name, class: 'fullwidth'
+  .row
+    .alpha.four.columns
+      = label_tag nil, t('.description')
+    .omega.twelve.columns
+      = text_area :payment_method, :description, {cols: 60, rows: 6, class: 'fullwidth'}
+  - if spree_current_user.admin?
+    .row
+      .alpha.four.columns
+        = label_tag nil, t('.environment')
+      .omega.twelve.columns
+        = collection_select(:payment_method, :environment, Rails.configuration.database_configuration.keys.sort, :to_s, :titleize, {}, {id: 'gtwy-env', class: 'select2 fullwidth'})
+  .row
+    .alpha.four.columns
+      = label_tag nil, t('.display')
+    .omega.twelve.columns
+      = select(:payment_method, :display_on, Spree::PaymentMethod::DISPLAY.collect { |display| [t('.' + display.to_s), display == :both ? nil : display.to_s] }, {}, {class: 'select2 fullwidth'})
+  .row
+    .alpha.four.columns
+      = label_tag nil, t('.active')
+    .two.columns
+      = radio_button :payment_method, :active, true
+      &nbsp;
+      = label_tag nil, t('.active_yes')
+    .omega.six.columns
+      = radio_button :payment_method, :active, false
+      &nbsp;
+      = label_tag nil, t('.active_no')
+
+  .row
+    .alpha.four.columns
+      = label(:payment_method, :tags, t('.tags'))
+    .omega.twelve.columns
+      = hidden_field(:payment_method, :tag_list, "ng-value" => "paymentMethod.tag_list")
+      %tags-with-translation#something{ object: "paymentMethod" }
+
+  = render 'providers'
+
+  = render partial: 'spree/admin/shared/calculator_fields', locals: { f: f }

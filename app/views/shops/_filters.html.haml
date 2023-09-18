@@ -1,0 +1,32 @@
+- resource ||= "visibleMatches"
+- property_filters ||= "| closedShops:show_closed | taxons:activeTaxons | shipping:shippingTypes"
+
+.row
+  = render 'shared/components/filter_controls'
+
+.row.animate-show{"ng-show" => "filtersActive"}
+  .small-12.columns
+    .row.filter-box
+      .small-12.large-9.columns
+        %h5.tdhead
+          .light
+            = t :hubs_filter_by
+          = t :hubs_filter_type
+
+        %filter-selector.small-block-grid-2.medium-block-grid-4.large-block-grid-5{ "selector-set" => "filterSelectors", objects: "#{resource} | taxonsOf", "active-selectors" => "activeTaxons" }
+      .small-12.large-3.columns
+        %h5.tdhead
+          .light
+            = t :hubs_filter_by
+          = t :hubs_filter_delivery
+        = render "shops/shipping_type_selector"
+
+      .small-12.large-12.columns
+        %h5.tdhead
+          .light
+            = t :hubs_filter_by
+          = t :hubs_filter_property
+        .filter-shopfront.property-selectors
+          %filter-selector{ "selector-set" => "filterSelectors", objects: "#{resource} #{property_filters} | propertiesOf:'distributed_properties'", "active-selectors" => "activeProperties"}
+
+= render 'shared/components/filter_box'

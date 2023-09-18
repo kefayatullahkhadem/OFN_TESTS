@@ -1,0 +1,90 @@
+%h2
+  {{ 'legal.cookies_policy.header' | t }}
+%p
+  {{ 'legal.cookies_policy.desc_part_1' | t }}
+%p
+  {{ 'legal.cookies_policy.desc_part_2' | t }}
+%p
+  {{ 'legal.cookies_policy.desc_part_3' | t }}
+
+%h2
+  {{ 'legal.cookies_policy.essential_cookies' | t }}
+%p
+  {{ 'legal.cookies_policy.essential_cookies_desc' | t }}
+
+%table{ng: { controller:"CookiesPolicyModalCtrl"}}
+  = render_cookie_entry( "_ofn_session_id", "legal.cookies_policy.cookie_session_desc" )
+  = render_cookie_entry( "cookies_consent", "legal.cookies_policy.cookie_consent_desc" )
+  = render_cookie_entry( "remember_spree_user_token", "legal.cookies_policy.cookie_remember_me_desc" )
+  = render_cookie_entry( "qos_token", "legal.cookies_policy.cookie_openstreemap_desc", "openstreetmap.org" )
+  %tr
+    %td
+      %p
+        %strong m
+        %span /
+        {{ 'legal.cookies_policy.cookie_domain' | t }}
+        = "m.stripe.com"
+      %p
+        %strong nsr
+        %span /
+        {{ 'legal.cookies_policy.cookie_domain' | t }}
+        = "m.stripe.network"
+      %p
+        %strong __stripe_sid
+        %span /
+        {{ 'legal.cookies_policy.cookie_domain' | t }}
+        = "{{ instance_hostname }}"
+      %p
+        %strong __stripe_mid
+        %span /
+        {{ 'legal.cookies_policy.cookie_domain' | t }}
+        = "{{ instance_hostname }}"
+      %p
+        {{ 'legal.cookies_policy.cookie_stripe_desc' | t }}
+%p
+  {{ 'legal.cookies_policy.essential_cookies_note' | t }}
+
+- if Spree::Config.cookies_policy_matomo_section
+  %h2
+    {{ 'legal.cookies_policy.statistics_cookies' | t }}
+  %p
+    {{ 'legal.cookies_policy.statistics_cookies_desc' | t }}
+  %p
+    {{ 'legal.cookies_policy.statistics_cookies_matomo_desc_html' | t }}
+
+  %table{ng: { controller:"CookiesPolicyModalCtrl"}}
+    = render_cookie_entry( "_pk_ref, _pk_cvar, _pk_id and _pk_ses", "legal.cookies_policy.cookie_matomo_basics_desc" )
+    = render_cookie_entry( "_pk_hsr, _pk_cvar, _pk_id and _pk_ses", "legal.cookies_policy.cookie_matomo_heatmap_desc" )
+    = render_cookie_entry( "piwik_ignore, _pk_cvar, _pk_id and _pk_ses", "legal.cookies_policy.cookie_matomo_ignore_desc" )
+
+  - if Spree::Config.matomo_url.present?
+    %p
+      {{ 'legal.cookies_policy.statistics_cookies_matomo_optout' | t }}
+    %p
+      %iframe{ src: matomo_iframe_src }
+
+%h2
+  {{ 'legal.cookies_policy.disabling_cookies_header' | t }}
+%p
+  {{ 'legal.cookies_policy.disabling_cookies_desc' | t }}
+%ul
+  %li
+    %a{ "ng-href" => "{{ 'legal.cookies_policy.disabling_cookies_firefox_link' | t }}", target: "_blank" }
+      Firefox
+  %li
+    %a{ "ng-href" => "{{ 'legal.cookies_policy.disabling_cookies_chrome_link' | t }}", target: "_blank" }
+      Chrome
+  %li
+    %a{ "ng-href" => "{{ 'legal.cookies_policy.disabling_cookies_ie_link' | t }}", target: "_blank" }
+      Internet Explorer
+  %li
+    %a{ "ng-href" => "{{ 'legal.cookies_policy.disabling_cookies_safari_link' | t }}", target: "_blank" }
+      Safari
+%p
+  {{ 'legal.cookies_policy.disabling_cookies_note' | t }}
+
+%a.close-reveal-modal{"ng-click" => "$close()"}
+  %i.ofn-i_009-close
+
+%a.mobile-close-reveal-modal{"ng-click" => "$close()"}
+  %i.ofn-i_009-close

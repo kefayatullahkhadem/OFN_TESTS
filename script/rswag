@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Generate the API documentation based on our specs.
+#
+# For API v0 and v1 you can call one of these:
+#
+#   ./bin/rake rswag
+#   ./script/rswag --dry-run
+#
+# For the DFC API you need to call:
+#
+#   ./script/rswag engines/dfc_provider
+#
+# The standard way to generate the documentation is `rake rswag` which calls
+# rspec under the hood. We have a few customisations to the rspec call though
+# which only work when calling rspec ourselves.
+#
+# - We actually run the specs to generate examples instead of a dry run.
+#   While rswag has an RSWAG_DRY_RUN switch, it doesn't work with our setup.
+# - We run only tagged swagger specs instead of all matching the pattern.
+exec ./bin/rspec\
+  --tag "swagger_doc"\
+  --format "Rswag::Specs::SwaggerFormatter"\
+  --order "defined"\
+  "${@:1}"

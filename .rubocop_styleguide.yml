@@ -1,0 +1,136 @@
+# Our Open Food Network style guide.
+#
+# These are the rules we agreed upon and we work towards.
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'vendor/**/*'
+    - 'node_modules/**/*'
+    # Excluding: inadequate Naming/FileName rule rejects GemFile name with camelcase
+    - 'engines/web/Gemfile'
+
+## OFN SETTINGS
+#
+# Cop settings that have been agreed upon by the OFN community
+
+Metrics:
+  Enabled: true
+
+Metrics/BlockLength:
+  AllowedMethods: [
+    "class_eval",
+    "collection",
+    "configure",
+    "context",
+    "delete",
+    "describe",
+    "feature",
+    "get",
+    "it",
+    "member",
+    "namespace",
+    "path",
+    "post",
+    "put",
+    "resource",
+    "resources",
+    "scenario",
+    "shared_examples",
+    "shared_examples_for",
+    "xdescribe",
+  ]
+
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
+Rails/ApplicationRecord:
+  Exclude:
+    # Migrations should not contain application code:
+    - "db/migrate/*.rb"
+
+Rails/SkipsModelValidations:
+  AllowedMethods:
+    - "touch"
+    - "touch_all"
+    - "update_all"
+    - "update_attribute"
+    - "update_column"
+    - "update_columns"
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: true
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Style/Send:
+  Enabled: true
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: true
+  EnforcedStyle: indented
+
+Layout/LineLength:
+  Enabled: true
+  Max: 100
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
+Naming/VariableNumber:
+  AllowedIdentifiers:
+    - street_address_1
+    - street_address_2
+  AllowedPatterns:
+    - _v[\d]+
+
+Bundler/DuplicatedGem:
+  Enabled: false
+
+## TEMPORARY/CONTESTED SETTINGS
+#
+# These are still to be decided upon, but recommended for inclusion by
+# oeoeaio after scrutinising offenses the codebase
+
+# Don't think this is a big issue, mostly picking up RPSEC scope definitions
+# with lamdas and RSpec '.to change{}' blocks
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+# Heaps of offences (> 100) in specs, mostly in situations where two or more
+# instances of a model are required, but only one is referenced. Difficult to
+# fix without making the spec look messy or rewriting it.
+# Should definitely fix at some point.
+Lint/UselessAssignment:
+  Exclude:
+  - spec/**/*
+
+Lint/MissingSuper:
+  Exclude:
+    - 'app/components/**/*'
+
+Metrics/AbcSize:
+  Max: 30 # default 17
+
+Metrics/MethodLength:
+  Enabled: true
+  Max: 25 # default 10
+
+Metrics/PerceivedComplexity:
+  Enabled: true
+  Max: 14 # default 8
+
+Naming/PredicateName:
+  Enabled: false

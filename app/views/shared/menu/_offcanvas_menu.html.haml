@@ -1,0 +1,34 @@
+%aside.left-off-canvas-menu.show-for-medium-down{ ng: { controller: "OffcanvasCtrl" } }
+  %ul.off-canvas-list
+    = cache_with_locale [ContentConfig.cache_key, @white_label_logo] do
+      %li.ofn-logo
+        %a{href: main_logo_link(@white_label_distributor)}
+          - if @white_label_logo&.variable?
+            = image_tag @white_label_distributor.white_label_logo_url(:mobile)
+          - else
+            %img{src: ContentConfig.url_for(:logo_mobile), srcset: ContentConfig.url_for(:logo_mobile_svg), width: "75", height: "26"}
+      - unless @hide_ofn_navigation
+        - [*1..7].each do |menu_number|
+          - menu_name = "menu_#{menu_number}"
+          - if ContentConfig[menu_name].present?
+            %li.li-menu
+              %a{href: t("#{menu_name}_url") }
+                %span.nav-primary
+                  %i{class: ContentConfig["#{menu_name}_icon_name"]}
+                  = t "#{menu_name}_title"
+
+    - if OpenFoodNetwork::I18nConfig.selectable_locales.count > 1
+      %li.language-switcher.li-menu
+        %a
+          %i.ofn-i_071-globe
+          = t('language_name')
+        %ul
+          - OpenFoodNetwork::I18nConfig.selectable_locales.each do |l|
+            - if I18n.locale != l
+              %li
+                %a{href: "?locale=#{l.to_s}" }= t('language_name', locale: l)
+    %li
+    - if spree_current_user.nil?
+      = render 'shared/menu/signed_out'
+    - else
+      = render 'shared/menu/signed_in_offcanvas'

@@ -1,0 +1,32 @@
+= csrf_meta_tags
+
+- content_for :main_ng_app_name do
+  = "ofn.admin"
+
+- content_for :page_actions do
+  - if can?(:fire, @order)
+    %li= event_links
+  = render partial: 'spree/admin/shared/order_links'
+  - if can?(:admin, Spree::Order)
+    %li
+      %a.button.icon-arrow-left{icon: 'icon-arrow-left', href: admin_orders_path }
+        = t(:back_to_orders_list)
+
+= render partial: "spree/admin/shared/order_page_title"
+= render partial: "spree/admin/shared/order_tabs", locals: { current: 'Order Details' }
+
+%div
+  = render partial: "spree/shared/error_messages", locals: { target: @order }
+
+  = admin_inject_shops(module: 'admin.orders')
+  = admin_inject_order_cycles
+  %div{"ng-controller" => "orderCtrl", "ofn-distributor-id" => @order.distributor_id, "ofn-order-cycle-id" => @order.order_cycle_id}
+
+    = render :partial => 'add_product' if can?(:update, @order)
+
+    - if @order.line_items.empty?
+      .no-objects-found
+        = Spree.t(:your_order_is_empty_add_product)
+
+    %div.admin-order-edit-form
+      = render partial: 'form'

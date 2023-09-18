@@ -1,0 +1,89 @@
+%div{ :id => "shipment_#{shipment.id}" }
+  %fieldset.no-border-bottom
+    %legend.stock-location{ :align => "center" }
+      %span.shipment-number
+        = shipment.number
+      = "-"
+      %span.shipment-state
+        = Spree.t("shipment_states.#{shipment.state}")
+      - if shipment.ready? and can? :update, shipment
+        = "-"
+        = link_to t(:ship), '#', :class => 'ship button icon-arrow-right', :data => { 'shipment-number' => shipment.number }
+
+  %table.stock-contents.index
+    %colgroup
+      %col{ :style => "width: 10%;" }
+      %col{ :style => "width: 30%;" }
+      %col{ :style => "width: 15%;" }
+      %col{ :style => "width: 15%;" }
+      %col{ :style => "width: 15%;" }
+      %col{ :style => "width: 15%;" }
+
+    %thead
+      %th{ :colspan => "2" }
+        = Spree.t(:item_description)
+      %th
+        = Spree.t(:price)
+      %th
+        = Spree.t(:quantity)
+      %th
+        = Spree.t(:total)
+      %th.orders-actions.actions
+
+    %tbody{ "data-shipment-number" => "#{shipment.number}", "data-order-number" => "#{order.number}" }
+      = render 'spree/admin/orders/shipment_manifest', order: order, shipment: shipment
+
+      - if shipment.can_modify?
+        %tr.edit-method.hidden.total
+          %td{ :colspan => "5" }
+            %div.field.alpha.five.columns
+              = label_tag 'selected_shipping_rate_id', Spree.t(:shipping_method)
+              = select_tag :selected_shipping_rate_id, options_for_select(shipment.shipping_rates.map { |sr| ["#{sr.name} #{sr.display_price}", sr.id] }, shipment.selected_shipping_rate_id), { :class => 'select2 fullwidth', :data => { 'shipment-number' => shipment.number } }
+
+          %td.actions
+            - if can? :update, shipment
+              = link_to '', '', :class => 'save-method icon_link icon-ok no-text with-tip', :data => { 'shipment-number' => shipment.number, :action => 'save' }, title: I18n.t('actions.save')
+              = link_to '', '', :class => 'cancel-method icon_link icon-cancel no-text with-tip', :data => { :action => 'cancel' }, :title => I18n.t('actions.cancel')
+      %tr.show-method.total
+        %td{ :colspan => "4" }
+          - if shipment.fee_adjustment.present?
+            %strong
+              = "#{shipment.fee_adjustment.label}: #{shipment.shipping_method.name}"
+          - else
+            = Spree.t(:cannot_set_shipping_method_without_address)
+
+        %td.total{ :align => "center" }
+          - if shipment.fee_adjustment.present?
+            %span
+              = shipment.fee_adjustment.display_amount
+
+        - if shipment.fee_adjustment.present? && shipment.can_modify?
+          %td.actions
+            - if can? :update, shipment
+              = link_to '', '', :class => 'edit-method icon_link icon-edit no-text with-tip', :data => { :action => 'edit' }, :title => Spree.t('edit')
+
+      %tr.edit-tracking.hidden.total
+        %td{ :colspan => "5" }
+          %label
+            = "#{Spree.t(:tracking_number)}:"
+          = text_field_tag :tracking, shipment.tracking
+
+        %td.actions
+          - if can?(:update, shipment) && !shipment.canceled?
+            = link_to '', '', :class => 'save-tracking icon_link icon-ok no-text with-tip', :data => { 'shipment-number' => shipment.number, :action => 'save' }, :title => I18n.t('actions.save')
+            = link_to '', '', :class => 'cancel-tracking icon_link icon-cancel no-text with-tip', :data => { :action => 'cancel' }, :title => I18n.t('actions.cancel')
+
+      %tr.show-tracking.total
+        %td{ :colspan => "5" }
+          - if shipment.tracking.present?
+            %strong
+              = "#{Spree.t(:tracking)}:"
+            = shipment.tracking
+          - else
+            = Spree.t(:no_tracking_present)
+
+        %td.actions
+          - if can?(:update, shipment) && shipment.can_modify?
+            = link_to '', '', :class => 'edit-tracking icon_link icon-edit no-text with-tip', :data => { :action => 'edit' }, :title => Spree.t('edit')
+            - if shipment.tracking.present?
+              = link_to '', '', :class => 'delete-tracking icon_link icon-trash no-text with-tip', :data => { 'shipment-number' => shipment.number, :action => 'remove' }, :title => Spree.t('delete')

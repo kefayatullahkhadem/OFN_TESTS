@@ -1,0 +1,20 @@
+.admin-product-form-fields {
+  label {
+    display: inline-block;
+  }
+  input,
+  select,
+  textarea,
+  .select2-container {
+    width: 100%;
+  }
+}
+
+.outstanding-balance {
+  margin-bottom: 15px;
+  text-transform: uppercase;
+
+  strong {
+    color: $color-2;
+  }
+}

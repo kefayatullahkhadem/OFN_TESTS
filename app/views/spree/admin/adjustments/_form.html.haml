@@ -1,0 +1,5 @@
+.row
+  - if @adjustment.new_record?
+    = render 'new_form', f: f
+  - else
+    = render 'edit_form', f: f

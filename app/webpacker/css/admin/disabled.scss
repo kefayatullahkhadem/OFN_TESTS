@@ -1,0 +1,32 @@
+$disabled-background: #c3c3c3;
+
+label.disabled {
+  color: $disabled-background;
+  pointer-events: none;
+}
+
+input[type="button"],
+input[type="submit"] {
+  &:disabled {
+    background-color: $disabled-background;
+    color: #ffffff;
+  }
+
+  &.secondary:disabled {
+    background-color: #ebf3fb;
+    border: 1px solid #ebf3fb;
+    color: #afcfef;
+  }
+}
+
+.select2-container-disabled {
+  pointer-events: none;
+
+  .select2-choice > .select2-chosen {
+    color: #a1a1a1;
+  }
+
+  &.select2-container-multi .select2-choices .select2-search-choice {
+    background-color: $disabled-background;
+  }
+}

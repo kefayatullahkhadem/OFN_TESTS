@@ -1,0 +1,64 @@
+- @object ||= enterprise
+
+.row
+  .three.columns.alpha
+    = f.label :hide_ofn_navigation, t('.hide_ofn_navigation')
+  .thirteen.columns
+    = f.check_box :hide_ofn_navigation, { "data-controller": "checkbox-display", "data-checkbox-display-target-id-value": "white_label_logo" }
+    
+%div{id: "white_label_logo"}
+  .row
+    .three.columns.alpha
+      = f.label :white_label_logo, t('.upload_logo')
+      %br
+      217 x 44 pixels
+    .thirteen.columns
+      = image_tag @object.white_label_logo_url if @object.white_label_logo.present?
+      %br
+      = f.file_field :white_label_logo, accept: "image/*"
+      - if @object.white_label_logo.present?
+        %button.button.small.red{ type: "button", "data-controller": "modal-link", "data-action": "click->modal-link#open", "data-modal-link-target-value": "remove_logo" }
+          = t('.remove_logo')
+
+  - if @object.white_label_logo.present?
+    .row
+      .three.columns.alpha
+        = f.label :white_label_logo_link, t('.white_label_logo_link_label')
+      .thirteen.columns
+        = f.text_field :white_label_logo_link
+    
+
+- if @object.white_label_logo.present?
+  = render ConfirmModalComponent.new(id: "remove_logo", confirm_reflexes: "click->WhiteLabel#remove_logo" ) do
+    .margin-bottom-30
+      = t('.remove_logo_confirm')
+
+// Hide groups tab boolean attribute
+
+.row
+  .three.columns.alpha
+    = f.label :hide_groups_tab, t('.hide_groups_tab')
+  .thirteen.columns
+    = f.check_box :hide_groups_tab
+
+.row
+  .three.columns.alpha
+    = label_tag :custom_tab, t('.create_custom_tab')
+  .thirteen.columns
+    = hidden_field_tag :custom_tab, "false" # submit `true` if checkbox is checked, `false` otherwise
+    - checked = @object.custom_tab&.title.present? || @object.errors["custom_tab.title"].present?
+    = check_box_tag :custom_tab, "true", checked, { "data-controller": "checkbox-display", "data-checkbox-display-target-id-value": "custom_tab_form" }
+
+%div{id: "custom_tab_form"}
+  = f.fields_for :custom_tab, @object.custom_tab do |custom_tab_form|  
+    .row
+      .three.columns.alpha
+        = custom_tab_form.label :title, t('.custom_tab_title')
+      .thirteen.columns
+        = custom_tab_form.text_field :title
+    .row
+      .three.columns.alpha
+        = custom_tab_form.label :content, t('.custom_tab_content')
+      .thirteen.columns
+        = custom_tab_form.hidden_field :content, id: "custom_tab_content"
+        %trix-editor{ input: "custom_tab_content", "data-controller": "trixeditor" }

@@ -1,0 +1,3 @@
+%ul
+  %active-selector{ ng: { repeat: "selector in allSelectors", show: "ifDefined(selector.fits, true)" } }
+    %span{"ng-bind" => "::selector.object.name"}

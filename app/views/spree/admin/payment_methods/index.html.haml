@@ -1,0 +1,49 @@
+- if spree_current_user.admin?
+  = render 'spree/admin/shared/configuration_menu'
+
+- content_for :page_title do
+  = t('.payment_methods')
+
+- content_for :page_actions do
+  %li
+    = button_link_to t('.new_payment_method'), new_object_url, icon: 'icon-plus', id: 'admin_new_payment_methods_link'
+
+- if @payment_methods.any?
+  %table#listing_payment_methods.index
+    %colgroup
+      %col{style: "width: 13%"}
+      %col{style: "width: 14%"}
+      %col{style: "width: 32%"}
+      - if spree_current_user.admin?
+        %col{style: "width: 14%"}
+      %col{style: "width:  8%"}
+      %col{style: "width:  8%"}
+      %col{style: "width: 11%"}
+    %thead
+      %tr
+        %th= t('.name')
+        %th= t('.products_distributor')
+        %th= t('.provider')
+        - if spree_current_user.admin?
+          %th= t('.environment')
+        %th= t('.display')
+        %th= t('.active')
+        %th.actions
+    %tbody
+      - @payment_methods.each do |method|
+        %tr{class: "#{cycle('odd', 'even')}", id: "#{spree_dom_id method}"}
+          %td.align-center= method.name
+          %td.align-center
+            - method.distributors.each do |distributor|
+              = distributor.name
+              %br/
+          %td= method.class.clean_name
+          - if spree_current_user.admin?
+            %td.align-center= method.environment.to_s.titleize
+          %td.align-center= method.display_on.blank? ? t('.both') : t('.' + method.display_on.to_s)
+          %td.align-center= method.active ? t('.active_yes') : t('.active_no')
+          %td.actions
+            = link_to_edit method, no_text: true
+            = link_to_delete method, no_text: true
+- else
+  .alpha.twelve.columns.no-objects-found= t('.no_payment_methods_found')

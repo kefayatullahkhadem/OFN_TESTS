@@ -1,0 +1,14 @@
+#welcome_page.sixteen.columns.alpha
+  %header
+    %h1= t('.welcome_title')
+    %p
+      = t('.welcome_text')
+      %strong
+      - profile_translation_key = @enterprise.is_primary_producer ? '.producer_profile' : '.profile'
+      = t(profile_translation_key)
+
+    %section
+      %h2= t('.next_step')
+      %p= t('.choose_starting_point')
+
+  = render partial: "change_type_form"

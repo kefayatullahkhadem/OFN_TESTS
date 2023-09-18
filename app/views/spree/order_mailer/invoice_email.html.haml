@@ -1,0 +1,10 @@
+%table.social.white-bg{:width => "100%"}
+  %tr
+    %td
+      %h3
+        = t('.hi', name: @order.bill_address.firstname)
+      %h4
+        = t('.invoice_attached_text')
+        %strong= "#{@order.distributor.name}"
+
+= render 'signoff'

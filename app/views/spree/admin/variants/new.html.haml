@@ -1,0 +1,12 @@
+= render partial: 'spree/shared/error_messages', locals: { target: @variant }
+
+= admin_inject_available_units
+
+= form_for [:admin, @product, @variant], :url => admin_product_variants_path(@product, @url_filters) do |f|
+  %fieldset
+    %legend{align: "center"}= t('.new_variant')
+    = render partial: 'form', locals: { f: f }
+
+  .form-buttons.filter-actions.actions
+    = button t('actions.create'), 'icon-ok'
+    = button_link_to t('actions.cancel'), collection_url(@url_filters), icon: 'icon-remove'

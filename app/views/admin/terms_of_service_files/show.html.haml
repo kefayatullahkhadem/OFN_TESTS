@@ -1,0 +1,19 @@
+- if spree_current_user.admin?
+  = render 'spree/admin/shared/configuration_menu'
+
+- content_for :page_title do
+  = t(".title")
+
+.admin-current-terms-of-service
+  - if @current_file
+    %p= t(".current_terms_html", tos_link: link_to(t(".terms_of_service"), @current_file.attachment), datetime: @current_file.updated_at)
+    %p= link_to t(".delete"), main_app.admin_terms_of_service_files_path, data: { method: :delete, "ujs-navigate": "false", confirm: t(".confirm_delete") }
+  - else
+    %p
+      = t(".no_files")
+      = t(".using_default_terms_html", tos_link: link_to_platform_terms)
+
+= form_for [main_app, :admin, @new_file] do |f|
+  = f.label :attachment, t(".attachment")
+  = f.file_field :attachment
+  = f.submit t(".create_terms_of_service")

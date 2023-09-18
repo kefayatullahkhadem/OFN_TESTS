@@ -1,0 +1,31 @@
+.row.exchange-distributed-products{'ng-init' => 'initializeExchangeProductsPanel(exchange)'}
+  .sixteen.columns.alpha.omega{ 'ng-show' => 'enterprises[exchange.enterprise_id].supplied_products.length != 0' }
+    %div{ 'ng-include' => "'admin/panels/exchange_products_panel_header.html'" }
+
+    .exchange-select-all-variants
+      %label
+        %input{ type: 'checkbox', name: 'order_cycle_outgoing_exchange_{{ $parent.$index }}_select_all_variants',
+          value: 1,
+          'ng-model' => 'exchange.select_all_variants',
+          'ng-change' => 'setExchangeVariants(exchange, incomingExchangeVariantsFor(exchange.enterprise_id), exchange.select_all_variants)',
+          'id' => 'order_cycle_outgoing_exchange_{{ $parent.$index }}_select_all_variants' }
+        {{ 'js.admin.panels.exchange_products.select_all_variants' | t:{ total_number_of_variants: exchangeTotalVariants(exchange) } }}
+
+    .exchange-products{ 'ng-hide' => 'productsLoading()' }
+      .exchange-product{'ng-repeat' => 'product in enterprises[exchange.enterprise_id].supplied_products | filter:visibleProducts:exchange:order_cycle.visible_variants_for_outgoing_exchanges' }
+        .exchange-product-details
+          %label
+            %img{'ng-src' => '{{ product.image_url }}'}
+            .name {{ product.name }}
+          .supplier {{ product.supplier_name }}
+
+        .exchange-product-variant{'ng-repeat' => 'variant in product.variants | visibleVariants:exchange:order_cycle.visible_variants_for_outgoing_exchanges | filter:variantSuppliedToOrderCycle'}
+          %label
+            %input{ type: 'checkbox', name: 'order_cycle_outgoing_exchange_{{ $parent.$parent.$index }}_variants_{{ variant.id }}',
+              value: 1,
+              'ng-model' => 'exchange.variants[variant.id]',
+              'id' => 'order_cycle_outgoing_exchange_{{ $parent.$parent.$index }}_variants_{{ variant.id }}',
+              'ng-disabled' => '!order_cycle.editable_variants_for_outgoing_exchanges.hasOwnProperty(exchange.enterprise_id) || order_cycle.editable_variants_for_outgoing_exchanges[exchange.enterprise_id].indexOf(variant.id) < 0' }
+            {{ variant.label }}
+
+    %div{ 'ng-include' => "'admin/panels/exchange_products_panel_footer.html'" }

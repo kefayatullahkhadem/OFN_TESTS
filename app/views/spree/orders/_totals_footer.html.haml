@@ -1,0 +1,35 @@
+%tfoot
+  #subtotal
+    %tr#subtotal-row.total
+      %td.text-right{colspan: "3"}
+        %strong
+          = t :order_produce
+      %td.text-right.total
+        %span= display_checkout_subtotal(order)
+
+  #order-charges
+    - checkout_adjustments_for(order, exclude: [:line_item]).reverse_each do |adjustment|
+      %tr.total
+        %td.text-right{:colspan => "3"}
+          %strong
+            - if adjustment.originator_type == "Voucher"
+              = "#{t(:voucher)}:"
+            = adjustment.label
+        %td.text-right.total
+          %span= adjustment.display_amount.to_html
+
+  #order-total.order-details-total
+    %tr.total
+      %td.text-right{colspan: "3"}
+        %h5
+          = t :order_total_price
+      %td.text-right.total
+        %h5#order_total= order.display_total.to_html
+
+  - if order.total_tax > 0
+    #tax
+      %tr#tax-row.total
+        %td.text-right{colspan: "3"}
+          = t :order_includes_tax
+        %td.text-right.total
+          %span= display_checkout_tax_total(order)

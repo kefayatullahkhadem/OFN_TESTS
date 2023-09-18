@@ -1,0 +1,26 @@
+- content_for :page_title do
+  = t('.title')
+
+- content_for :main_ng_app_name do
+  = "admin.subscriptions"
+
+- content_for :page_actions do
+  %li{ "data-controller": "help-modal-link", "data-action": "click->help-modal-link#open", "data-help-modal-link-target-value": "new_subscription_help_modal" }
+    %a.button.icon-plus#new-subscription
+      = t('.new')
+
+= render :partial => 'spree/admin/shared/order_sub_menu'
+
+= admin_inject_column_preferences module: 'admin.subscriptions'
+= render 'data'
+= render 'order_update_issues_dialog'
+
+%div.margin-bottom-50{ ng: { controller: 'SubscriptionsController' } }
+  %save-bar{ dirty: "false", persist: "false" }
+  = render 'filters'
+  = render 'controls'
+  = render 'table'
+  = render 'loading_flash'
+  = render 'no_results'
+= render HelpModalComponent.new(id: "new_subscription_help_modal", close_button: false) do
+  = render 'new_subscription_dialog'

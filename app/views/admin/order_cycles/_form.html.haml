@@ -1,0 +1,9 @@
+= render 'wizard_progress'
+
+%fieldset.no-border-bottom
+  %legend{ align: 'center'}= t('.general_settings')
+
+= render 'name_and_timing_form', f: f
+
+-if Enterprise.managed_by(spree_current_user).include? @order_cycle.coordinator
+  = render 'coordinator_fees', f: f

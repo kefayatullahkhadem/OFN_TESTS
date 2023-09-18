@@ -1,0 +1,25 @@
+.row-loading {
+  opacity: 0.5;
+}
+
+.row-loading-icons {
+  margin-left: 2.5em;
+  position: absolute;
+
+  i {
+    font-size: 2.3em;
+    opacity: 0.75;
+
+    &::before {
+      vertical-align: top;
+    }
+
+    &.success {
+      color: $spree-green;
+    }
+
+    &.error {
+      color: $color-warning;
+    }
+  }
+}

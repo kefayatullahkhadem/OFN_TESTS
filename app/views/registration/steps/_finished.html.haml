@@ -1,0 +1,12 @@
+%script{ type: "text/ng-template", id: "registration/finished.html" }
+  .container#registration-finished
+    .row
+      .small-12.columns.pad-top
+        %header
+          %h2= t(".headline")
+          .panel.callout
+            %p{ "ng-bind" => "'registration.steps.finished.thanks' | t:{enterprise: enterprise.name}" }
+            %p= t(".login")
+    .row
+      .small-12.columns.text-center
+        %a.button.primary{ type: "button", href: spree.admin_dashboard_path }= t(".action")

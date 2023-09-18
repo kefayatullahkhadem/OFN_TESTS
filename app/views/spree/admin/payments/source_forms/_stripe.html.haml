@@ -1,0 +1,19 @@
+-# = render "spree/admin/payments/source_forms/gateway", payment_method: payment_method
+.stripe
+  - content_for :stripe_js, flush: true do
+    = render "shared/stripe_js"
+
+  - if Stripe.publishable_key
+    :javascript
+      angular.module('admin.payments').value("stripeObject", Stripe("#{Stripe.publishable_key}"))
+
+  .row
+    .three.columns
+      = label_tag :cardholder_name, t(:cardholder_name)
+    .six.columns
+      = text_field_tag :cardholder_name, nil, {size: 40, "ng-model" => 'form_data.name'}
+  .row
+    .three.columns
+      = label_tag :card_details, t(:card_details)
+    .nine.columns
+      %stripe-elements{selected: "isSelected(#{payment_method.id})"}

@@ -1,0 +1,34 @@
+- content_for :page_title do
+  = t :admin_order_cycles
+
+- content_for :main_ng_app_name do
+  = "admin.orderCycles"
+
+= content_for :page_actions do
+  - if subscriptions_enabled?
+    %li
+      %a.button.icon-plus#new-schedule{ "schedule-dialog" => true, "ofn-with-tip" => t('.new_schedule_tooltip'), "powertip-location" => 's' }
+        = t('admin.order_cycles.index.new_schedule')
+  %li#new_order_cycle_link
+    = button_link_to t(:new_order_cycle), main_app.new_admin_order_cycle_path, icon: 'icon-plus', id: 'admin_new_order_cycle_link', "ofn-with-tip" => t(:new_order_cycle_tooltip), "powertip-location" => 's'
+
+= admin_inject_column_preferences module: 'admin.orderCycles'
+
+%div{ ng: { controller: 'OrderCyclesCtrl' } }
+  = render 'admin/order_cycles/filters'
+
+  %hr.divider
+
+  .row.controls{ ng: { show: "orderCycles.length > 0" } }
+    .thirteen.columns.alpha &nbsp;
+    %columns-dropdown{ action: "#{controller_name}_#{action_name}" }
+
+  %form{ name: 'order_cycles_form' }
+    %save-bar{ dirty: "order_cycles_form.$dirty", persist: "false" }
+      %input.red{ type: "button", value: t(:save_changes), ng: { click: "saveAll()", disabled: "!order_cycles_form.$dirty" } }
+    %table.index#listing_order_cycles{ ng: { show: 'orderCycles.length > 0' } }
+      = render 'admin/order_cycles/header' #, simple_index: simple_index
+      %tbody
+        = render 'admin/order_cycles/row' #, simple_index: simple_index
+    = render 'admin/order_cycles/loading_flash'
+    = render 'admin/order_cycles/show_more'

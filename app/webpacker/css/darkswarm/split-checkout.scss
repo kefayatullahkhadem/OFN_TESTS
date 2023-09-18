@@ -1,0 +1,568 @@
+.checkout-tab {
+  height: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  span, span > a {
+    font-size: 1.3rem;
+    @include headingFont;
+  } 
+
+  @media screen and (max-width: 700px) {
+    
+    span, span > a {
+      font-size: 1.1rem;
+    }
+    
+    span.checkout-tab-number {
+      display: none;
+    }
+  }
+
+  &:not(.selected) {
+    background-color: $white;
+    border-bottom: 5px solid $min-accessible-grey;
+
+    span, span > a {
+      color: $min-accessible-grey;
+    }
+  }
+
+  &.selected {
+    background-color: $ofn-brand;
+
+    span, span > a {
+      color: $white;
+    }
+  }
+
+  &.success {
+    border-bottom: 5px solid $clr-turquoise-bright;
+
+    span {
+      text-decoration: underline;
+    }
+
+    span.checkout-tab-label {
+      &:after {
+        content: '✓';
+        background-color: $clr-turquoise-bright;
+        color: $white;
+        border-radius: 50%;
+        width: 1em;
+        height: 1em;
+        line-height: 1em;
+        display: inline-block;
+        font-family: $body-font;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+.already-ordered {
+  margin-left: 20px;
+
+  .panel {
+    background-color: $grey-250;
+    border: 1px solid $tiny-blue;
+    color: $grey-700;
+    
+    &.medium-6, &.medium-10 {
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+}
+
+.already-ordered .panel, #distributor_address.panel {
+  font-size: 0.875rem;
+  padding: 1rem;
+}
+
+.checkout-step {
+  margin-top: 3rem;
+
+  .medium-6, .medium-10 {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .checkout-substep {
+    margin-bottom: 1rem;
+    margin-top: 5rem;
+
+    &:first-child {
+      margin-top: 3rem;
+    }
+  }
+
+  .checkout-title {
+    font-size: 1.06rem;
+    @include headingFont;
+    font-weight: $font-weight-bold;
+    color: $darker-grey;
+    margin-bottom: 1.5rem;
+  }
+
+  .checkout-input {
+    margin-bottom: 1.5rem;
+
+    .field_with_errors {
+      label {
+        font-weight: $font-weight-bold;
+        color: $red-700;
+      }
+      input {
+        border-color: $red-700;
+      } 
+    }
+
+    .stripe-card {
+      background: white;
+      box-sizing: border-box;
+      font-weight: 400;
+      padding: 0.6rem 0.5rem;
+      border: 1px solid #cccccc;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+      border-radius: 0;
+      height: 42px;
+      width: 100%;
+    }
+
+    label {
+      margin-bottom: 0.3rem;
+    }
+
+    input,
+    select {
+      margin: 0;
+    }
+
+    #distributor_address.panel {
+      span {
+        @include force-wrap;
+      }
+    }
+    
+    a {
+      color: $teal-400;
+      text-decoration: underline;
+    }
+
+    &.checkout-input-radio {
+      display: flex;
+      align-items: center;
+
+      input[type=radio] {
+        min-width: 12px;
+      }
+
+      label {
+        margin-top: 0.3rem;
+      }
+    }
+  }
+
+  em.fees {
+    margin-left: -0.5rem;
+    font-size: 14px; // same as label
+    font-weight: bold;
+    margin-left: 10px;
+    // Add opening and closing parentheses
+    &:before {
+      content: "(";
+    }
+    &:after {
+      content: ")";
+    }
+  }
+
+  .checkout-input span.formError, div.error.card-errors {
+    background-color: rgba(193, 18, 43, 0.1);
+    color: $red-700;
+    font-style: normal;
+    margin: 0;
+    font-size: 0.8rem;
+    display: block;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+    &.standalone {
+      padding: 10px;
+    }
+  }
+
+  div.error.card-errors {
+    &:empty {
+      display: none;
+    }
+  }
+
+  .paymentmethod-container .paymentmethod-description.panel {
+    @include force-wrap;
+  }
+
+
+
+  .checkout-submit {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+
+    .button {
+      width: 100%;
+      margin-bottom: 2rem;
+      border-radius: 0.5em;
+
+      &.primary {
+        background-color: $orange-500;
+      }
+
+      &.cancel {
+        background-color: $white;
+        border: 1px solid $orange-500;
+        color: $orange-500;
+        
+      }
+    }
+
+    &.checkout-submit-inline {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+
+      @media screen and (max-width: 700px) {
+        flex-direction: column;
+      }
+
+      .checkout-submit-or {
+        margin-left: 20px;
+        margin-right: 20px;
+        text-transform: uppercase;
+        color: $min-accessible-grey;
+
+        @media screen and (max-width: 700px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .checkout-guest-title {
+    font-size: 1.5rem;
+    @include headingFont;
+    text-align: center;
+    color: $min-accessible-grey;
+  }
+}
+
+.checkout-summary {
+  margin-top: 0;
+
+  .checkout-substep {
+    font-size: 0.875rem;
+    margin-top: 1rem;
+
+    &:first-child {
+      margin-top: 20px;
+    }
+   
+    .two-columns {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: 1fr;
+      grid-column-gap: 10px;
+      grid-row-gap: 0px;
+    }  
+  }
+
+  .summary-edit {
+    color: $teal-400;
+    text-decoration: underline;
+    display: inline-block;
+    margin-left: 15px;
+    font-size: 0.875rem;
+    font-weight: normal;
+    font-family: $body-font;
+  
+    &:hover {
+      color: $teal-500;
+      text-decoration: underline;
+  
+      &:after {
+        color: $teal-500;
+      }
+    }
+    
+    &:after {
+      background-image: url("../images/edit-with-pen.svg");
+      content: " ";
+      display: inline-block;
+      width: 1em;
+      height: 1em;
+      margin-left: 5px;
+      line-height: 1em;
+      position: relative;
+      top: 2px;
+    }
+  }
+
+  .summary-subtitle {
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+}
+
+.checkout-summary {
+  form {
+    display: flex;
+    justify-content: space-between;
+
+    .summary-main {
+      width: 66.66%;
+      border-right: 1px solid #DDD;
+      padding-right: 20px;
+      padding-top: 20px;
+    }
+    .summary-right {
+      width: calc(33.33% - 20px);
+      padding-left: 20px;
+      padding-right: 20px;
+      border-right: 1px solid #DDD;
+
+      .voucher {
+        color: $teal-500
+      }
+    }
+  }
+}
+
+.summary-right {
+  padding-top: 40px;
+
+  .checkout-submit {
+    margin-top: 40px;
+
+    .button.primary {
+      background-color: $clr-turquoise;
+      &:hover {
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
+.summary-right-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  .summary-right-line-label {
+    font-size: 0.875rem;
+  }
+
+  .summary-right-line-value {
+    font-size: 0.875rem;
+    text-align: right;
+  }
+
+  &.total {
+    margin-bottom: 20px;
+    @include headingFont;
+
+    .summary-right-line-label {
+      font-weight: bold;
+      font-size: 1.06rem;
+    }
+    .summary-right-line-value {
+      font-size: 1.06rem;
+    }
+  }
+}
+
+.summary-right {
+  .checkout-input {
+    display: flex;
+    align-items: baseline;
+
+    input[type=checkbox] + label {
+      margin-left: 1rem;
+    }
+  }  
+}
+
+#line-items {
+  display: block;
+  overflow-x: auto;
+
+  h5 {
+    background-color: transparent;
+  }
+}
+
+.two-columns-inputs {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+
+  &.voucher {
+    justify-content: normal;
+    align-items: center;
+
+    a {
+      color: inherit;
+    }
+  }
+
+  .voucher-button {
+    &.cancel {
+      width: 30%;
+      border-radius: 0.35em;
+      padding:0;
+      height: 2.5em;
+      background-color: $teal-400
+    }
+  }
+  
+  .voucher-added {
+    padding: 10px;
+    background-color: $teal-300;
+    color: $teal-500;
+    margin: 0;
+    cursor: default;
+
+    i.ofn-i_051-check-big:before {
+      background-color: $teal-500;
+      color: $teal-300;
+      border-radius: 50%;
+      font-style: normal;
+    }
+
+    i.ofn-i_051-check-big {
+      font-style: italic;
+    }
+  }
+
+  > .checkout-input {
+    flex: 1;
+  }
+
+  &:last-child > .checkout-input {
+    margin-bottom: 0;
+  }
+
+  @media screen and (max-width: 700px) {
+    flex-direction: column;
+    gap: 0;
+    &:last-child > .checkout-input {
+      margin-bottom: 1.5rem;
+    }
+
+    &.voucher {
+      flex-direction: row;
+      gap: 1rem;
+    }
+  }
+}
+
+// Shows label as a placeholder, inside the input and when the input is focused shows the label above the input
+.checkout-input.with-floating-label {
+  position: relative;
+
+  label {
+    display: none; // Display none by default, and shown by floating_label_controller
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 0.875rem;
+    padding: 8px;
+    padding-left: 9px;
+    color: $min-accessible-grey;
+    pointer-events: none;
+    transform: translateY(0);
+    transform-origin: top left;
+    &.with-transition {
+      transition: all 0.2s ease-in-out;
+    }
+  }
+  &.active {
+      label {
+        transform: translateY(-9px) translateX(10px) scale(0.9);
+        background-color: white;
+        padding-left: 3px;
+        padding-right: 3px;
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+    }  
+}
+
+// Handle the mobile view for the summary step
+@media screen and (max-width: 800px) {
+  .checkout-summary form {
+    display: block;
+  }
+
+  .checkout-summary form .summary-right {
+    width: calc(100% + 30px);
+    margin-left: -15px;
+    background-color: white;
+    border-right: none;
+    border-top: 1px solid #DDD;
+    
+    padding-top: 20px;
+
+    &.sticked {
+      box-shadow: 0 -4px 10px #DDD;
+    }
+
+    .summary-right-line.total {
+      margin-bottom: 10px;
+    }
+
+    .checkout-submit {
+      margin-top: 10px;
+
+      .checkout-input {
+        margin-bottom: 10px;
+      }
+
+      .button {
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .checkout-summary form .summary-main {
+    width: 100%;
+    border-right: none;
+  }
+
+  .checkout-summary .checkout-substep .two-columns {
+    // only one column actually
+    grid-template-columns: 1fr;
+
+    > :nth-child(2) {
+      margin-top: 20px;
+    }
+  }
+
+  .checkout-summary .summary-subtitle {
+    margin-bottom: 10px;
+  }
+}
+
+// For small screen or for iOS devices, increase to 16px the input font-size
+@media screen and (max-width: 700px) {
+  .checkout-input input {
+    font-size: 16px;
+  }
+}
+@supports(-webkit-overflow-scrolling: touch) {
+  .checkout-input input {
+    font-size: 16px;
+  }
+}

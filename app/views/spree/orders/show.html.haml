@@ -1,0 +1,31 @@
+- content_for(:title) do
+  = t :orders_show_title
+
+- content_for :injection_data do
+  = inject_enterprise_and_relatives if current_distributor.present?
+
+.darkswarm
+  = render "shopping_shared/header" if current_distributor.present?
+
+  %fieldset#order_summary.footer-pad
+    .row
+      .columns.large-12.text-center
+        %h2
+          = t(:orders_show_order_number, number: @order.number)
+          - if @order.canceled?
+            %span.brick
+              = t(:orders_show_cancelled)
+              %i.ofn-i_009-close
+          - elsif @order.complete?
+            %span.turquoise
+              = t(:orders_show_confirmed)
+              %i.ofn-i_051-check-big
+
+    #order
+      - if params.has_key? :checkout_complete
+        %h1= t(:thank_you_for_your_order)
+
+      = render 'spree/shared/order_details', order: @order
+
+
+= render partial: "shared/footer"

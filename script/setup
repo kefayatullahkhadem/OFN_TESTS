@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+
+# Set up Rails app. Run this script immediately after cloning the codebase.
+#
+# First, you need to create the database user the app will use by manually
+# typing the following in your terminal:
+#
+#   $ sudo -u postgres psql -c "CREATE USER ofn WITH SUPERUSER CREATEDB PASSWORD 'f00d'"
+#
+# This will create the "ofn" user as superuser and allowing it to create
+# databases.
+
+# Exit if any command fails
+set -e
+
+YELLOW='\033[0;33m'
+RED='\033[0;31m'
+NO_COLOR='\033[0m'
+
+# Check ruby version
+RUBY_VERSION=$(cat .ruby-version)
+if command -v rbenv > /dev/null; then
+  ./script/rbenv-install.sh
+elif ! ruby --version | grep $RUBY_VERSION > /dev/null; then
+  printf "${RED}Open Food Network requires ruby ${RUBY_VERSION}${NO_COLOR}. "
+  printf "Have a look at: https://github.com/rbenv/rbenv\n"
+  exit 1
+fi
+
+# Install dependencies, prepare database and tidy
+./bin/setup
+
+# Load some default data for your environment
+bundle exec rake ofn:sample_data
+printf '\n'
+
+printf "${YELLOW}WELCOME TO OPEN FOOD NETWORK!\n"
+printf '\n'
+
+printf "To login as the default user, use:"
+printf '\n'
+printf '\n'
+printf '  email: ofn@example.com\n'
+printf "  password: ofn123\n${NO_COLOR}"

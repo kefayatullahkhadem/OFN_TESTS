@@ -1,0 +1,38 @@
+= render partial: 'spree/admin/shared/product_sub_menu'
+
+= render partial: 'spree/admin/shared/product_tabs', locals: {current: 'Variants'}
+
+#new_variant
+
+%table.index.sortable{"data-sortable-link" => update_positions_admin_product_variants_path(@product)}
+  %colgroup
+    %col{style: "width: 5%"}/
+    %col{style: "width: 25%"}/
+    %col{style: "width: 20%"}/
+    %col{style: "width: 20%"}/
+    %col{style: "width: 15%"}/
+    %col{style: "width: 15%"}/
+  %thead
+    %tr
+      %th{colspan: "2"}= t('.options')
+      %th= t('.price')
+      %th= t('.sku')
+      %th.actions
+  %tbody
+    - @variants.each do |variant|
+      %tr{id: spree_dom_id(variant), class: cycle('odd', 'even'), style: "#{"color:red;" if variant.deleted? }" }
+        %td.no-border
+          %span.handle
+        %td= variant.full_name
+        %td.align-center= variant.display_price.to_html
+        %td.align-center= variant.sku
+        %td.actions
+          = link_to_with_icon('icon-edit', Spree.t(:edit), edit_object_url(variant, @url_filters), no_text: true) unless variant.deleted?
+          = link_to_delete(variant, { url: object_url(variant, @url_filters), no_text: true }) unless variant.deleted?
+
+- content_for :page_actions do
+  %ul.inline-menu
+    %li#new_var_link
+      = link_to_with_icon('icon-plus', t('.new_variant'), new_admin_product_variant_url(@product, @url_filters), class: 'button')
+
+    %li= link_to_with_icon('icon-filter', @deleted.blank? ? t('.show_deleted') : t('.show_active'), admin_product_variants_url(@product, @url_filters.merge(deleted: @deleted.blank? ? "on" : "off")), class: 'button')

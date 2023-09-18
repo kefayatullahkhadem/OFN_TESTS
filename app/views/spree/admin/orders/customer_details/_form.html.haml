@@ -1,0 +1,28 @@
+%fieldset.no-border-top
+  %fieldset.index.no-border-bottom
+    %legend{:align => "center"}= Spree.t(:account)
+    .row
+      .alpha.eight.columns.fullwidth
+        .field
+          = f.label :email, Spree.t(:email) + ':'
+          = f.email_field :email, :class => 'fullwidth'
+
+  .alpha.eight.columns
+    %fieldset.no-border-bottom
+      %legend{:align => "center"}= Spree.t(:billing_address)
+      = f.fields_for :bill_address do |ba_form|
+        = render :partial => 'address_form', :locals => { :f => ba_form, :name => Spree.t(:billing_address), :use_billing => false }
+
+  .omega.eight.columns
+    %fieldset.no-border-bottom
+      %legend{:align => "center"}= Spree.t(:shipping_address)
+      = f.fields_for :ship_address do |sa_form|
+        = render :partial => 'address_form', :locals => { :f => sa_form, :name => Spree.t(:shipping_address), :use_billing => true }
+
+  .clear
+
+  .form-buttons.filter-actions.actions
+    = button Spree.t('actions.update'), 'icon-refresh'
+
+  - content_for :head do
+    = javascript_include_tag 'admin/spree/orders/use_billing.js'

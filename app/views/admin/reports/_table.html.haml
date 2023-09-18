@@ -1,0 +1,13 @@
+.report__table-container
+  %table.report__table
+    %thead
+      %tr
+        - report.table_headers.each do |heading|
+          %th
+            = heading
+    %tbody
+      - if report.grouped_data.present?
+        = render partial: 'admin/reports/row_group', locals: { report: report, data: report.grouped_data }
+      - else
+        %tr
+          %td{colspan: report.table_headers.count}= t(:none)

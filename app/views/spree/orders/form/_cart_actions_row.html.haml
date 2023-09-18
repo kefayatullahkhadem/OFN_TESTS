@@ -1,0 +1,10 @@
+%tr
+  %td{colspan:"2"}
+  %td
+    %button#update-button.secondary.radius.expand.small{"ng-class" => "{ alert: form.$dirty && form.$valid }"}
+      %i.ofn-i_023-refresh
+      = t(:orders_form_update_cart)
+  %td
+  %td#empty-cart.text-center
+    %span#clear_cart_link
+      = link_to t(:orders_form_empty_cart), main_app.empty_cart_path, method: :put, :class => 'not-bold small'

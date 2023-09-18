@@ -1,0 +1,291 @@
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+table .blank-action {
+  display: inline-block;
+  width: 29px;
+}
+
+text-angular .ta-editor {
+  border: 1px solid $pale-blue;
+  border-radius: 3px;
+}
+
+#header #logo {
+  top: 10px;
+}
+
+#header h1 {
+  left: 275px;
+}
+
+span.error,
+div.error:not(.flash) {
+  color: $color-warning;
+}
+
+/* Fix conflict between Spree and elRTE's styles */
+.el-rte .toolbar {
+  float: none;
+  margin-bottom: 0;
+}
+
+input.red,
+a.button.red,
+button.red {
+  background-color: $color-warning;
+  margin-right: 5px;
+  color: #ffffff;
+}
+
+a.button.red {
+  &:not(:hover) {
+    color: #fff;
+    background-color: $color-warning;
+  }
+}
+
+input.orange {
+  background-color: #ff9848;
+  margin-right: 5px;
+}
+
+input.search {
+  margin-bottom: 1em;
+}
+#new_enterprise_fee_set input.search {
+  float: right;
+}
+
+a {
+  cursor: pointer;
+}
+
+a.action--disabled {
+  cursor: default;
+
+  &:hover {
+    color: $color-link;
+  }
+}
+
+form.order_cycle {
+  h2 {
+    margin-top: 2em;
+  }
+  .date-field {
+    float: left;
+    margin-right: 3em;
+  }
+  ol {
+    list-style-type: none;
+    li {
+      margin-bottom: 0.5em;
+    }
+  }
+  .icon-question-sign {
+    font-size: 18px;
+  }
+  table.checkout-options {
+    ul {
+      margin-left: 1em;
+    }
+    p,
+    li {
+      margin: 0.5em 0;
+    }
+  }
+  table.exchanges {
+    tr td.active {
+      width: 20px;
+    }
+
+    .exchange-load-all-variants {
+      margin: 0px 5px 20px 5px;
+    }
+
+    .exchange-select-all-variants {
+      clear: both;
+      margin: 15px 5px 25px 5px;
+    }
+
+    .exchange-products {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-flow: row wrap;
+      flex-flow: row wrap;
+    }
+    .exchange-product {
+      overflow: auto;
+      width: 18%;
+      min-height: 7.5em;
+      margin: 0 1% 1% 0;
+      border: 1px solid #dae7ff;
+      padding: 5px;
+
+      .exchange-product-details {
+        clear: both;
+        margin-bottom: 1em;
+        min-height: 6em;
+
+        .name {
+          font-weight: bold;
+        }
+      }
+
+      .exchange-product-variant {
+        float: left;
+        margin-right: 2em;
+      }
+    }
+    .collection-details {
+      input {
+        width: 90%;
+      }
+      span {
+        font-size: 1rem;
+      }
+    }
+  }
+  .coordinator-fees {
+    margin-top: 1em;
+  }
+
+  .actions {
+    margin-top: 3em;
+  }
+}
+
+table#listing_order_cycles {
+  tr.open td {
+    background-color: #d9fccb;
+  }
+
+  tr.upcoming td {
+    background-color: #fbfccb;
+  }
+
+  tr.closed td {
+    background-color: #eee;
+  }
+}
+
+table#listing_payment_methods {
+  table-layout: fixed;
+
+  td {
+    padding: 15px 5px;
+    word-wrap: break-word;
+  }
+}
+
+table#listing_enterprise_groups {
+  td.actions {
+    text-align: left;
+  }
+}
+
+.fullwidth_inputs {
+  #{$text-inputs},
+  select {
+    width: 100%;
+  }
+}
+
+// TODO: remove this, use class below
+#no_results {
+  font-weight: bold;
+  color: $color-warning;
+}
+
+.no-results {
+  font-weight: bold;
+  color: $color-warning;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: $color-warning;
+  }
+}
+
+.field_with_errors > input {
+  border-color: $color-error;
+}
+
+// textAngular wysiwyg
+text-angular {
+  .ta-toolbar {
+    border: 1px solid #cdd9e4;
+    padding: 0.4em;
+    margin-bottom: -1px;
+    background-color: #f1f1f1;
+    border-radius: 0.25em 0.25em 0 0;
+  }
+  .ta-scroll-window > .ta-bind {
+    max-height: 400px;
+    min-height: 100px;
+    outline: none;
+    p {
+      margin-bottom: 1.5rem;
+    }
+  }
+  .ta-scroll-window.form-control {
+    min-height: 100px;
+    box-shadow: none !important;
+  }
+  .btn-group {
+    display: inline;
+    margin-right: 8px;
+    button {
+      padding: 5px 10px !important; // Add `!important` to be more specific than the default button styles (app/webpacker/css/admin/components/buttons.scss)
+      // Hope this (text-angular) will be removed soon in order to use trix editor
+      margin-right: 0.25em;
+    }
+    button.active:not(:hover) {
+      box-shadow: 0 0 0.7em rgba(0, 0, 0, 0.3) inset;
+      background-color: #4583bf;
+    }
+  }
+  a {
+    color: $spree-green;
+  }
+}
+
+span.required {
+  color: $color-5;
+  font-size: 110%;
+}
+
+table td.actions {
+  .icon-trash,
+  .icon-edit,
+  icon-copy {
+    &.disabled {
+      border-color: #d0d0d0;
+      color: #c0c0c0;
+      background-color: #fafafa;
+      &:hover {
+        border-color: #a5a5a5;
+        color: #a5a5a5;
+        background-color: #fafafa;
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+- if ContentConfig.open_street_map_enabled
+  .map-container
+    %ofn-open-street-map#open-street-map
+    %div#open-street-map--search
+      %input.autocomplete-input
+      %ul.autocomplete-result-list
+
+- else
+  .map-container
+    %map{"ng-controller" => "MapCtrl"}
+      %ui-gmap-google-map{options: "map.additional_options", center: "map.center", zoom: "map.zoom",
+                          styles: "map.styles", draggable: "true"}
+        %map-search
+        %ui-gmap-markers{models: "OfnMap.enterprises", fit: "true",
+                         coords: "'self'", icon: "'icon'", click: "'reveal'"}

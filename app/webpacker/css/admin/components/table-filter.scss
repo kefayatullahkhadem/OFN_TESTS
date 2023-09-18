@@ -1,0 +1,18 @@
+#table-filter {
+  .field {
+    input[type="text"],
+    input[type="phone"],
+    input[type="email"],
+    input[type="number"],
+    input[type="url"] {
+      width: 100%;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+  }
+}

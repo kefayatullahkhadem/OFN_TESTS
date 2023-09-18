@@ -1,0 +1,19 @@
+-# This is hopefully a temporary measure, pending the arrival of multiple named inventories
+-# for shops. We need this here to allow hubs to restrict visible variants to only those in
+-# their inventory if they so choose
+.row
+  .alpha.eleven.columns
+    = t('.text1')
+    = succeed "." do
+      %strong
+        %a{href: main_app.admin_inventory_path }= t('.inventory')
+    %br
+    = t('.text2')
+.row
+  .alpha.eleven.columns
+    .five.columns.alpha
+      = radio_button :enterprise, :preferred_product_selection_from_inventory_only, false
+      = label :enterprise, :preferred_product_selection_from_inventory_only, t('.preferred_product_selection_from_inventory_only_yes')
+    .six.columns.omega
+      = radio_button :enterprise, :preferred_product_selection_from_inventory_only, true
+      = label :enterprise, :preferred_product_selection_from_inventory_only, t('.preferred_product_selection_from_inventory_only_no')

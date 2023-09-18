@@ -1,0 +1,14 @@
+%tr.product_property.fields{id: "spree_#{dom_id(f.object)}"}
+  %td.no-border
+    %span.handle
+    = f.hidden_field :id
+  %td.property_name
+    - if spree_current_user.admin?
+      = f.text_field :property_name, class: 'autocomplete'
+    - else
+      = f.select :property_name, @properties, { include_blank: true }, { class: 'select2 fullwidth' }
+  %td.value
+    = f.text_field :value, class: 'autocomplete'
+  %td.actions
+    - if f.object.persisted?
+      = link_to_delete f.object, { url: spree.admin_product_product_property_url(@product, f.object, @url_filters), no_text: true }

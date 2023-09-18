@@ -1,0 +1,31 @@
+- if @report_subtypes.present? && @report_subtypes.count > 1
+  %input{type: 'hidden', name: 'report_subtype', value: @report_subtype}
+
+.row.rendering-options{ "data-controller": "csv-select" }
+  .alpha.two.columns
+    = label_tag :report_format, t(".generate_report")
+  .omega.fourteen.columns{ style: "margin-bottom: 1.5em;" }
+    = select_tag :report_format, grouped_options_for_select({ |
+      t('.formatted_data') => { t('.on_screen') => '', "PDF" => 'pdf', t('.spreadsheet') => 'xlsx' }, |
+      t('.raw_data') => { "CSV" => 'csv' }, |
+    }), { "data-csv-select-target": "reportType", "data-action": "csv-select#handleSelectChange" }
+
+  - if @report.header_option? || @report.summary_row_option?
+    .row
+      .alpha.two.columns= label_tag nil, t(".display")
+      .omega.fourteen.columns
+        - if @report.header_option?
+          %span.inline-checkbox{ style: "margin-right: 1rem;" }
+            = check_box_tag :display_header_row, true, @rendering_options.options[:display_header_row]
+            = label_tag :display_header_row, t(".header_row")
+        - if @report.summary_row_option?
+          %span.inline-checkbox
+            = check_box_tag :display_summary_row, true, @rendering_options.options[:display_summary_row], { "data-csv-select-target": "checkbox" }
+            = label_tag :display_summary_row, t(".summary_row"), { "data-csv-select-target": "label" }
+
+- if @report.available_headers.present?
+  .row
+    .alpha.two.columns= label_tag nil, t(:report_columns)
+    .omega.fourteen.columns
+      = render MultipleCheckedSelectComponent.new(name: "fields_to_show", options: @report.available_headers, selected: @rendering_options.options[:fields_to_show])
+  

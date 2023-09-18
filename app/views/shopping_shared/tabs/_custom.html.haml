@@ -1,0 +1,4 @@
+.content
+  .row
+    .columns.custom-tab
+      = sanitize(@distributor.custom_tab&.content, scrubber: TrixScrubber.new)

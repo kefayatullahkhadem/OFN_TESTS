@@ -1,0 +1,28 @@
+.joyride-tip-guide.price_breakdown{ng: {class: "{ in: tt_isOpen, fade: tt_animation }", show: "tt_isOpen"}}
+  %span.joyride-nub.top
+  .background{ng: {click: "tt_isOpen = false"}}
+  .joyride-content-wrapper
+    %h6 {{ "js.shopfront.price_breakdown" | t }}
+    %ul
+      %li
+        .right {{ ::variant.price | localizeCurrency }}
+        %span{"ng-bind" => "::'item_cost' | t"}
+      %li{"ng-if" => "::variant.fees.admin"}
+        .right {{ ::variant.fees.admin | localizeCurrency }}
+        %span{"ng-bind" => "::variant.fees_name.admin"}
+      %li{"ng-if" => "::variant.fees.sales"}
+        .right {{ ::variant.fees.sales | localizeCurrency }}
+        %span{"ng-bind" => "::variant.fees_name.sales"}
+      %li{"ng-if" => "::variant.fees.packing"}
+        .right {{ ::variant.fees.packing | localizeCurrency }}
+        %span{"ng-bind" => "::variant.fees_name.packing"}
+      %li{"ng-if" => "::variant.fees.transport"}
+        .right {{ ::variant.fees.transport | localizeCurrency }}
+        %span{"ng-bind" => "::variant.fees_name.transport"}
+      %li{"ng-if" => "::variant.fees.fundraising"}
+        .right {{ ::variant.fees.fundraising | localizeCurrency }}
+        %span{"ng-bind" => "::variant.fees_name.fundraising"}
+      %li
+        %strong
+          .right = {{ ::variant.price_with_fees | localizeCurrency }}
+          &nbsp;

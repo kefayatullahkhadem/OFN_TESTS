@@ -1,0 +1,10 @@
+= render partial: 'spree/admin/shared/product_sub_menu'
+= render partial: 'spree/admin/shared/product_tabs', locals: { :current => 'Group Buy Options' }
+= render partial: 'spree/shared/error_messages', locals: { :target => @product }
+
+= form_for [:admin, @product], url: admin_product_url(@product, @url_filters),  method: :put, html: { :multipart => true } do |f|
+  %fieldset.no-border-top
+    = render partial: 'group_buy_form', locals: { f: f }
+    .form-buttons.filter-actions.actions
+      = button t('spree.actions.update'), 'icon-refresh'
+      = link_to t('spree.actions.cancel'), edit_admin_product_url(@product, @url_filters), id: 'cancel_link', class: 'button icon-remove'

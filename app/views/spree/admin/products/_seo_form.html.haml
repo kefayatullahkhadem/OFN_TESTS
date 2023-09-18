@@ -1,0 +1,12 @@
+.row
+  .alpha.eleven.columns
+    = f.field_container :meta_keywords do
+      = f.label :meta_keywords, t('admin.products.seo.product_search_keywords')
+      %span.icon-question-sign{ 'ofn-with-tip' => t('admin.products.seo.product_search_tip') }
+      %br/
+      = f.text_field :meta_keywords, :class => 'fullwidth', :rows => 6
+  .alpha.eleven.columns
+    = f.field_container :notes do
+      = f.label :notes, t(:notes)
+      = f.text_area :notes, { :class => 'fullwidth', rows: 5 }
+      = f.error_message_on :notes

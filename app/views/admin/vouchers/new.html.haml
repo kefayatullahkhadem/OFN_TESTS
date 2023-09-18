@@ -1,0 +1,27 @@
+= form_with model: @voucher, url: admin_enterprise_vouchers_path(@enterprise), html: { name: "voucher_form" } do |f|
+  .row
+    .sixteen.columns.alpha
+      .four.columns.alpha.text-right
+        %a.button{ href: "#{edit_admin_enterprise_path(@enterprise)}#!#vouchers_panel"}
+          = t('.back')
+      .twelve.columns.omega
+        .row 
+          .eight.columns.text-center
+            %legend= t(".legend")
+          .four.columns.text-right
+            = f.submit t('.save'), class: 'red'
+        .row
+          .alpha.four.columns
+            = f.label :code, t('.voucher_code')
+          .omega.eight.columns
+            = f.text_field :code, class: 'fullwidth'
+        .row
+          .alpha.four.columns
+            = f.label :voucher_type, t('.voucher_type')
+          .omega.eight.columns
+            = f.select :voucher_type, options_for_select(Voucher::TYPES.map { |type| [t(".#{type.demodulize.underscore}"), type] }, @voucher.class.to_s)
+        .row
+          .alpha.four.columns
+            = f.label :amount, t('.voucher_amount')
+          .omega.eight.columns
+            = f.text_field :amount, value: @voucher.amount

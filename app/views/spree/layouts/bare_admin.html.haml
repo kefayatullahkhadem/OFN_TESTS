@@ -1,0 +1,21 @@
+%html{ lang: "en", "ng-csp": "no-unsafe-eval" }
+  %head= render :partial => 'spree/admin/shared/head'
+  %body.admin{"data-turbo": "false", "data-ajax-root-path": main_app.root_path}
+    #wrapper
+      = render partial: "admin/shared/flashes", locals: { flashes: flash }
+
+      = render partial: "spree/layouts/admin/progress_spinner"
+
+      %header#header
+        .container
+          %figure.columns.five
+            = link_to image_tag(Spree::Config[:admin_interface_logo], id: 'logo'), spree.admin_dashboard_path
+          %nav.columns.eleven.admin-login-navigation-bar
+            = render partial: "spree/layouts/admin/login_nav"
+
+      #content
+        .row
+          .container
+            %div{:class => "sixteen columns"}
+              = yield
+    %div

@@ -1,0 +1,19 @@
+= render :partial => "spree/admin/variants/autocomplete", :formats => :js
+
+#add-line-item
+  %fieldset.no-border-bottom
+    %legend{:align => "center"}= Spree.t(:add_product)
+
+    - if @order.canceled?
+      = t(".cannot_add_item_to_canceled_order")
+    - else
+      .field.nine.columns.alpha
+        = label_tag :add_variant_id, Spree.t(:name_or_sku)
+        = hidden_field_tag :add_variant_id, "", :class => "variant_autocomplete fullwidth"
+      .five.columns.omega
+        .field
+          = label_tag 'include_out_of_stock', t(".include_out_of_stock_variants")
+          %br/
+          = check_box_tag 'include_out_of_stock', '1'
+
+  #stock_details

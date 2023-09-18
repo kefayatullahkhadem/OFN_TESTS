@@ -1,0 +1,50 @@
+%div.admin-product-form-fields
+  .left.twelve.columns.alpha
+    = f.field_container :name do
+      = f.label :name, raw(t(:name) + content_tag(:span, ' *', :class => 'required'))
+      = f.text_field :name, :class => 'fullwidth title'
+      = f.error_message_on :name
+
+    = f.field_container :description do
+      = f.label :description, t(:description)
+      %text-angular{'id' => 'product_description', 'name' => 'product[description]', 'class' => 'text-angular', 'textangular-unsafe-sanitizer' => true, "textangular-links-target-blank" => true, 'ta-toolbar' => "[['bold','italics','underline','clear'],['insertLink']]"}
+        = sanitize(@product.description, scrubber: ContentScrubber.new)
+      = f.error_message_on :description
+
+  .right.four.columns.omega
+    .variant_units_form{ 'ng-app' => 'admin.products', 'ng-controller' => 'editUnitsCtrl' }
+
+      = f.field_container :units do
+        = f.label :variant_unit_with_scale, t(:spree_admin_variant_unit_scale)
+        %select.select2.fullwidth{ id: 'product_variant_unit_with_scale', 'ng-model' => 'variant_unit_with_scale', 'ng-change' => 'setFields()', 'ng-options' => 'unit[1] as unit[0] for unit in variant_unit_options' }
+          %option{'value' => ''}
+
+      = f.text_field :variant_unit, {'id' => 'variant_unit', 'ng-value' => 'product.variant_unit', 'hidden' => true}
+      = f.text_field :variant_unit_scale, {'id' => 'variant_unit_scale', 'ng-value' => 'product.variant_unit_scale', 'hidden' => true}
+
+      .variant_unit_name{'ng-show' => 'product.variant_unit == "items"'}
+        = f.field_container :variant_unit_name do
+          = f.label :variant_unit_name, t(:spree_admin_variant_unit_name)
+          = f.text_field :variant_unit_name, {placeholder: t('admin.products.unit_name_placeholder')}
+          = f.error_message_on :variant_unit_name
+
+    = render 'spree/admin/products/primary_taxon_form', f: f
+
+    = f.field_container :supplier do
+      = f.label :supplier, t(:spree_admin_supplier)
+      %br
+      = f.collection_select(:supplier_id, @producers, :id, :name, {:include_blank => true}, {:class => "select2"})
+      = f.error_message_on :supplier
+
+    .clear
+
+    = f.field_container :shipping_categories do
+      = f.label :shipping_category_id, t(:shipping_categories)
+      = f.collection_select(:shipping_category_id, @shipping_categories, :id, :name, {}, { :class => 'select2' })
+      = f.error_message_on :shipping_category
+
+  .clear
+
+  %div
+
+  .clear
